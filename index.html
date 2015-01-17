@@ -5,29 +5,37 @@
 </head>
 <body>
 
-<script type="text/javascript">
-  var context = AudioContext ? new AudioContext() : new webkitAudioContext();
+  <div id="log"></div>
 
-  var sourceNode = context.createBufferSource();
+  <script type="text/javascript">
+    var context = AudioContext ? new AudioContext() : new webkitAudioContext();
 
-  sourceNode.connect(context.destination);
+    var sourceNode = context.createBufferSource();
 
-  var play = function(buffer){
-    var sourceNode = context.createBufferSource(buffer);
     sourceNode.connect(context.destination);
-    sourceNode.start(0);
-  };
 
-  var mp3Url = "rick.mp3";
+    var play = function(buffer){
+      log.innerHTML = 'playing...';
+      var sourceNode = context.createBufferSource();
+      sourceNode.connect(context.destination);
+      sourceNode.buffer = buffer;
+      sourceNode.start(0);
+    };
 
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', mp3Url, true);
-  xhr.responseType = 'arraybuffer';
-  xhr.onload = function(e) {
-    context.decodeAudioData(xhr.response, play);
-  };
-  xhr.send();
-</script>
+    var mp3Url = "rick.mp3";
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', mp3Url, true);
+    xhr.responseType = 'arraybuffer';
+    xhr.onload = function(e) {
+      log.innerHTML = 'decoding...';
+      context.decodeAudioData(xhr.response, play);
+    };
+    xhr.send();
+
+    log.innerHTML = 'loading the file...';
+
+  </script>
 
 </body>
 </html>
