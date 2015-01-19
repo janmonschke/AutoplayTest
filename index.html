@@ -8,7 +8,10 @@
   <div id="log"></div>
 
   <script type="text/javascript">
-    var context = AudioContext ? new AudioContext() : new webkitAudioContext();
+    // shim the AudioContext if needed
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+
+    var context = new AudioContext();
 
     var sourceNode = context.createBufferSource();
 
